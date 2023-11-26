@@ -1,3 +1,6 @@
+// Documentation: https://www.prisma.io/docs/concepts/components/prisma-client/working-with-prismaclient/instantiate-prisma-client (Singleton pattern)
+// I used this: https://www.prisma.io/docs/guides/other/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
+
 import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
