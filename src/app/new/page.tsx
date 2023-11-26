@@ -1,7 +1,28 @@
 import Link from 'next/link'
+import prisma from '@/db'
+import { redirect } from 'next/navigation'
 
 // Here we are creating a server action that will create a new todo item in our database
+// ASYNC function. This is important
+async function createTodo(data: FormData) {
+    // To run this function on the server we need to write 'use server'
+    // This is telling us that this is server code and that it will NEVER run on the client
+    // We have to enable/add 'experimental.serverActions' to our next.config.js file - This was the case in Next 13, but no longer needed in Next 14
+    'use server'
 
+    // Here we are using the 'data' parameter that we passed into the function to get the title of the todo item that we want to create
+    // The 'title' is the name of the input field that we want to get the value from
+    const title = data.get('title')?.valueOf()
+
+    // Here we are checking to make sure that the title is a string and that it is not empty
+    if (typeof title !== 'string' || title.length === 0) {
+        throw new Error('Invalid title')
+    }
+
+    await prisma.todo.create({ data: { title, complete: false}})
+    redirect('/')
+
+}
 
 export default function New() {
     return (
@@ -9,7 +30,7 @@ export default function New() {
             <header className='flex justify-between items-center mb-4'>
                 <h1 className="text-2xl">New</h1>
             </header>
-            <form className="flex gap-2 flex-col">
+            <form action={createTodo} className="flex gap-2 flex-col">
                 <input
                     type="text"
                     name="title"
