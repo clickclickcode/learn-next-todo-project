@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model todo {
+  id String @id @default(uuid())
+  title String
+  complete Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// After creating our 'model todo' we have to migrate this to prisma
+// We do that by typing 'npx prisma migrate dev --name init'
+// The name given here is 'init' (after the --name)
+
+// We now get a migration folder in the prisma folder
+// We also get some db files. The db files are also going in the gitIgnore
